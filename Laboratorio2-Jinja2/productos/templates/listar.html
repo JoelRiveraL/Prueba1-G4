@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %} Listar Productos {% endblock %}
+
+{% block content %}
+<br>
+<hr>
+<center>
+    <h1>Productos en Venta</h1>
+</center>
+<hr>
+
+<center>
+    <a href="{% url 'crear_productos' %}" class="btn btn-primary btn-sm">Crear Producto</a><br>
+    <hr>
+    <h3>Importar Productos</h3>
+    <form method="POST" enctype="multipart/form-data" action="{% url 'importar_productos' %}">
+        {% csrf_token %}
+        <input type="file" name="file" required>
+        <button class="btn btn-primary btn-sm" type="submit"
+            onclick="return confirm('¿Estás seguro de importar este archivo?');">Importar</button>
+    </form>
+    <hr>
+    <h3>Exportar Productos</h3>
+    <form method="POST" enctype="multipart/form-data" action="{% url 'exportar_productos' %}">
+        {% csrf_token %}
+        <button class="btn btn-primary btn-sm" type="submit"
+            onclick="return confirm('¿Estás seguro de exportar estos productos?');"">Exportar</button>
+</form>
+</center>
+<hr>
+<div class=" container mt-4">
+            <div class="row">
+                {% for producto in productos %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto.nombre }}</h5>
+                            <p class="card-text">
+                                Precio: {{ producto.precio }}<br>
+                                Cantidad: {{ producto.cantidad }}
+                            </p>
+                            <a href="{% url 'editar_producto' producto.id %}" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="{% url 'borrar_producto' producto.id %}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Estás seguro de que deseas borrar este producto?');">Borrar</a>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+            {% endblock %}
